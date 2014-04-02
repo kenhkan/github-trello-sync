@@ -16,13 +16,15 @@ utility = require './lib/utility'
   REDIS_PASSWORD
 } = process.env
 
+
 # Set up connection to Redis
 redis = Redis.createClient REDIS_PORT, REDIS_HOST
 redis.auth REDIS_PASSWORD
 
 # The main loop, which runs immediately
 runLoop = ->
-  github.listOrgEvents GITHUB_USERNAME, GITHUB_ORG
+  ## Get a stream of events
+  events = github.listOrgEvents GITHUB_USERNAME, GITHUB_ORG
     # Initial content is the resource stream. Need to lift it
     .flatten()
     # Convert buffer to string
@@ -38,6 +40,8 @@ runLoop = ->
     # Take each event as its own data packet
     .flatten()
 
+  ## Process issue events
+  events.fork()
     # We only care about issue events
     .filter (evt) ->
       evt.type is 'IssuesEvent'
@@ -58,6 +62,10 @@ runLoop = ->
     .toArray (x) ->
       console.log JSON.stringify x
       redis.end()
+
+
+  ## TODO: Process other events by forking
+
 
 trello = Trello.create
   username: TRELLO_KEY
