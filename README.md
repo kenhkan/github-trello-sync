@@ -61,3 +61,16 @@ Trello Pros
 * High-level planning with all issues in one view
 * Allow arbitrary sorting in order of importance
 * Serve as a QA "buffer" after an issue has been closed
+
+
+Usage
+-----
+
+1. Set up a Heroku instance
+2. Get the [Trello app credentials](https://trello.com/1/appKey/generate) and
+   save to environment variables `TRELLO_KEY` and `TRELLO_SECRET`
+3. Generate a new [GitHub token](https://github.com/settings/applications) and
+   save to environment variables `GITHUB_USERNAME` and `GITHUB_TOKEN`
+4. Specify the board name as environment variable `TRELLO_BOARD`
+5. Specify the organization as environment variable `GITHUB_ORG`
+6. Simply push
