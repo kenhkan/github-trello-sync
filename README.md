@@ -26,9 +26,9 @@ Given a Trello and a GitHub credentials, a Trello board name, a GitHub
 organization, it maps repos to lists, issues to cards, and issue comments from
 GitHub to Trello.
 
-All collaboration and ticket/issue/story creation still
-happen on GitHub but organization of these issues from a higher-level, holistic
-standpoint is managed within a single board on Trello.
+All collaboration and ticket/issue/story creation still happen on GitHub but
+organization of these issues from a higher-level, holistic standpoint is
+managed within a single board on Trello.
 
 
 The Methodology
@@ -41,3 +41,23 @@ The Methodology
 4. Archive cards that are confirmed complete, or else re-open issue or create
    new related issues
 5. Repeat the process
+
+
+Why this way?
+-------------
+
+We want to use GitHub as our primary collaboration tool because virtually all
+developers are familiar with it, but we need Trello for high-level planning. In
+short:
+
+GitHub Pros
+
+* Developer familiarity
+* Tight integration between comment, commit, and code
+* Force issues to be relevant to the code repository in question
+
+Trello Pros
+
+* High-level planning with all issues in one view
+* Allow arbitrary sorting in order of importance
+* Serve as a QA "buffer" after an issue has been closed
