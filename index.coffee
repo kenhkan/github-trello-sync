@@ -1,3 +1,4 @@
+_ = require 'highland'
 Redis = require 'redis'
 Github = require './lib/github'
 Trello = require './lib/trello'
@@ -36,7 +37,31 @@ runLoop = ->
     # Take each event as its own data packet
     .flatten()
 
-    # Save the record by
+    # We only care about issue events
+    .filter (evt) ->
+      evt.type is 'IssuesEvent'
+
+    # Filter all events already in the database
+    .flatFilter (evt) ->
+      done = false
+      _ (push, next) ->
+        return push(null, _.nil) if done
+        redis.get evt.id, (err, res) ->
+          done = true
+          console.log 'filter', res?
+          push null, not res?
+          next()
+
+    # Save the record by event IDs
+    .flatMap (evt) ->
+      done = false
+      _ (push, next) ->
+        return push(null, _.nil) if done
+        redis.set evt.id, JSON.stringify(evt), (err, res) ->
+          done = true
+          push null, evt
+          next()
+
     # Should get them all in series
     .toArray (x) ->
       console.log JSON.stringify x
