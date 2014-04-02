@@ -12,9 +12,10 @@ exports.request = (url, options, done) ->
       push null, _.nil
       return
 
+    # Run this only once
+    hasRun = true
+
     hyperquest url, options, (err, res) ->
-      # Run this only once
-      hasRun = true
       # Pass to caller
       done res
       # Pass onward in stream
