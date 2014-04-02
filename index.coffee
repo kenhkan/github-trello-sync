@@ -40,7 +40,10 @@ runLoop = ->
     # Take each event as its own data packet
     .flatten()
 
-    # Filter all events already in the database
+    # Filter all events already in the database. We must do this filter step
+    # explicitly rather than just allowing Redis to save to database regardless
+    # record existence because we don't want to process records already in the
+    # database
     .flatFilter (evt) ->
       utility.once (done) ->
         redis.get evt.id, (err, res) ->
