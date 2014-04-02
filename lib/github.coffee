@@ -30,7 +30,7 @@ exports.create = (params) ->
       # Remember to convert to milliseconds
       pollInterval *= 1000
       # See you in the future
-      setTimeout runLoop, pollInterval
+      #setTimeout runLoop, pollInterval
 
   listOrgEvents: (username, org) ->
     request "#{base}/users/#{username}/events/orgs/#{org}",

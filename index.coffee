@@ -1,3 +1,4 @@
+Redis = require 'redis'
 Github = require './lib/github'
 Trello = require './lib/trello'
 
@@ -8,7 +9,14 @@ Trello = require './lib/trello'
   GITHUB_USERNAME
   GITHUB_TOKEN
   GITHUB_ORG
+  REDIS_HOST
+  REDIS_PORT
+  REDIS_PASSWORD
 } = process.env
+
+# Set up connection to Redis
+redis = Redis.createClient REDIS_PORT, REDIS_HOST
+redis.auth REDIS_PASSWORD
 
 # The main loop, which runs immediately
 runLoop = ->
@@ -27,9 +35,12 @@ runLoop = ->
     .map JSON.parse
     # Take each event as its own data packet
     .flatten()
+
+    # Save the record by
     # Should get them all in series
     .toArray (x) ->
-      console.log 'x', JSON.stringify(x)[0..200]
+      console.log JSON.stringify x
+      redis.end()
 
 trello = Trello.create
   username: TRELLO_KEY
