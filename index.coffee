@@ -40,23 +40,22 @@ runLoop = ->
     # Take each event as its own data packet
     .flatten()
 
-  ## Process issue events
-  events.fork()
-    # We only care about issue events
-    .filter (evt) ->
-      evt.type is 'IssuesEvent'
-
     # Filter all events already in the database
     .flatFilter (evt) ->
       utility.once (done) ->
         redis.get evt.id, (err, res) ->
           done err, not res?
-
     # Save the record by event IDs
     .flatMap (evt) ->
       utility.once (done) ->
         redis.set evt.id, JSON.stringify(evt), (err, res) ->
           done err, evt
+
+  ## Process issue events
+  events.fork()
+    # We only care about issue events
+    .filter (evt) ->
+      evt.type is 'IssuesEvent'
 
     # Should get them all in series
     .toArray (x) ->
