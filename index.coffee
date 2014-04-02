@@ -2,6 +2,7 @@ _ = require 'highland'
 Redis = require 'redis'
 Github = require './lib/github'
 Trello = require './lib/trello'
+utility = require './lib/utility'
 
 {
   TRELLO_KEY
@@ -43,24 +44,15 @@ runLoop = ->
 
     # Filter all events already in the database
     .flatFilter (evt) ->
-      done = false
-      _ (push, next) ->
-        return push(null, _.nil) if done
+      utility.once (done) ->
         redis.get evt.id, (err, res) ->
-          done = true
-          console.log 'filter', res?
-          push null, not res?
-          next()
+          done err, not res?
 
     # Save the record by event IDs
     .flatMap (evt) ->
-      done = false
-      _ (push, next) ->
-        return push(null, _.nil) if done
+      utility.once (done) ->
         redis.set evt.id, JSON.stringify(evt), (err, res) ->
-          done = true
-          push null, evt
-          next()
+          done err, evt
 
     # Should get them all in series
     .toArray (x) ->
