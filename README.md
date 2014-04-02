@@ -1,5 +1,5 @@
-GitHub to Trello Adapter
-========================
+Sync between GitHub and Trello
+==============================
 
 
 The Need

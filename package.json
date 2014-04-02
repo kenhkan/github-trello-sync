@@ -1,0 +1,9 @@
+{
+  "name": "github-trello-sync",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "highland": "~1.19.1",
+    "coffee-script": "~1.7.1"
+  }
+}
