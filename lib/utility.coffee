@@ -4,24 +4,9 @@ hyperquest = require 'hyperquest'
 # Nice wrapper around hyperquest that returns a Highland stream. It calls a
 # callback with the resource as well if you want to extract the headers.
 exports.request = (url, options, done) ->
-  hasRun = false
-
-  _ (push, next) ->
-    # Stop and end the stream if it has already run
-    if hasRun
-      push null, _.nil
-      return
-
-    # Run this only once
-    hasRun = true
-
+  exports.once (done) ->
     hyperquest url, options, (err, res) ->
-      # Pass to caller
-      done res
-      # Pass onward in stream
-      push null, _ res
-      # Need to complete the stream cycle
-      next()
+      done err, _ res
 
 # Need to use a simple generator that runs once? Can't stand the syntax? Simply
 # call this with a function that takes a callback that you call when you're
