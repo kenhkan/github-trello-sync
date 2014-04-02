@@ -28,4 +28,4 @@ github.listOrgEvents GITHUB_USERNAME, GITHUB_ORG
   .flatten()
   # Should get them all in series
   .each (x) ->
-    console.log 'x', x
+    #console.log 'x', x
